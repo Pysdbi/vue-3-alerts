@@ -5,24 +5,6 @@
 > Alerts
 Использваоние: 
 ```vue
-<template>
-	<Modal
-    v-if="activeAlert"
-    v-model="activeAlert.isShow"
-    modal-title="Ошибка"
-    overlay
-  >
-    <div>type: {{ activeAlert.type }}</div>
-    <div>msg: {{ activeAlert.msg }}</div>
-    <div>isConfirm: {{ activeAlert.isConfirm }}</div>
-    <button
-      @click="activeAlert?.onOkFunc"
-    >
-      Ok
-    </WButton>
-  </Modal>
-</template>
-
 <script setup lang="ts">
 import { useAlerts } from "@/composables/useAlerts"
 
@@ -32,4 +14,18 @@ const err = (): void => {
   onOk(() => alert("СУПЕР"))
 }
 </script>
+
+<template>
+ <Modal
+    v-if="activeAlert"
+    v-model="activeAlert.isShow"
+  >
+    <div>type: {{ activeAlert.type }}</div>
+    <div>msg: {{ activeAlert.msg }}</div>
+    <div>isConfirm: {{ activeAlert.isConfirm }}</div>
+    <button @click="activeAlert?.onOkFunc">
+      Ok
+    </button>
+  </Modal>
+</template>
 ```
