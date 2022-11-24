@@ -4,7 +4,7 @@
 
 > Alerts
 Использваоние: 
-```
+```vue
 <template>
 	<Modal
     v-if="activeAlert"
