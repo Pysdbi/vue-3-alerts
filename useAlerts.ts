@@ -26,6 +26,7 @@ type AlertCallbackType = "onOk" | "onYes" | "onNo"
 
 type UseAlerts = () => (Record<AlertType, AlertAction> & {
   getActiveAlert: Ref<Alert | undefined>
+  closeActive: () => void
 })
 
 const alerts = reactive<Alert[]>([])
@@ -47,15 +48,18 @@ export const useAlerts: UseAlerts = () => {
         },
       }
 
+      const callbackWrapper = (func: Function): Function => () => {
+        func()
+      }
       const callbacks: Record<AlertCallbackType, AlertCallback> = {
         onOk: (func) => {
-          if (typeof func === "function") alert.onOkFunc = func
+          if (typeof func === "function") alert.onOkFunc = callbackWrapper(func)
         },
         onYes: (func) => {
-          if (typeof func === "function") alert.onYesFunc = func
+          if (typeof func === "function") alert.onYesFunc = callbackWrapper(func)
         },
         onNo: (func) => {
-          if (typeof func === "function") alert.onNoFunc = func
+          if (typeof func === "function") alert.onNoFunc = callbackWrapper(func)
         },
       }
 
@@ -68,6 +72,10 @@ export const useAlerts: UseAlerts = () => {
 
   return {
     getActiveAlert: computed(() => alerts.slice(-1)?.[0]),
+    closeActive: () => {
+      alerts.slice(-1)[0].isShow = false
+    },
+    alerts,
     error: createAlert("error"),
     warn: createAlert("warn"),
     info: createAlert("info"),
